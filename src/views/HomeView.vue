@@ -21,6 +21,18 @@
         下载
       </button>
     </div>
+
+    <div class="flex">
+      <!-- 下载进度条 -->
+      <div class="progress-bar-container w-11/12 h-2  dark:bg-gray-500 bg-gray-300 mt-4 rounded-md">
+        <div class="progress-bar h-full bg-blue-500 rounded-md" :style="{ width: downloadProgress + '%' }"></div>
+      </div>
+      <!-- 下载速度 -->
+      <div class="download-speed ml-2 mt-2 " v-if="downloadSpeed !== null">
+        {{ downloadSpeed.toFixed(1) }}MB/s
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -34,6 +46,10 @@ const defaultImageUrl = 'https://i0.hdslb.com/bfs/article/32d48f7821243b471e2be2
 const bvNumber = ref('');
 const imageUrl = ref(defaultImageUrl);
 const isDownloadButtonEnabled = ref(false);
+const downloadProgress = ref(0);
+const downloadSpeed = ref(0);
+const updateFrequency = 5; // 更新频率(ms)
+let updateCounter = 0;
 
 const resolveVideo = async () => {
   try {
@@ -62,7 +78,6 @@ const downloadVideo = () => {
   if (!isDownloadButtonEnabled.value) {
     return;
   }
-  
   if (!bvNumber.value || !bvNumber.value.startsWith('BV')) {
     alert('请正确输入bv号');
     return;
@@ -76,15 +91,38 @@ const downloadVideo = () => {
 
   const downloadUrl = `https://bili.api.scc.lol/?bv=${bvNumber.value}`;
 
-  // Perform download
+  // 计算下载速度
+  let prevTime = performance.now();
+  let prevLoaded = 0;
+
+  //加载
   const xhr = new XMLHttpRequest();
   xhr.open('GET', downloadUrl, true);
   xhr.responseType = 'blob';
 
+  // progress 监听进度
+  xhr.addEventListener('progress', (event) => {
+    if (event.lengthComputable) {
+      const currentTime = performance.now();
+      const elapsedTime = (currentTime - prevTime) / 1000; // s
+      const loadedData = event.loaded - prevLoaded;
+      const speed = loadedData / elapsedTime / 1024 / 1024; // MB/s
+      
+      const percentComplete = (event.loaded / event.total) * 100;
+      downloadProgress.value = percentComplete;
+
+      if (updateCounter === 0) {
+        downloadSpeed.value = speed;
+      }
+      updateCounter = (updateCounter + 1) % updateFrequency;
+      prevTime = currentTime;
+      prevLoaded = event.loaded;
+    }
+  });
+
   xhr.onload = function () {
     const blob = new Blob([xhr.response], { type: 'video/mp4' });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement('a');
     a.href = url;
     a.download = 'video.mp4';
@@ -93,6 +131,10 @@ const downloadVideo = () => {
 
     URL.revokeObjectURL(url);
     document.body.removeChild(a);
+
+    // 重置
+    downloadProgress.value = 0;
+    downloadSpeed.value = 0;
   };
 
   xhr.send();
