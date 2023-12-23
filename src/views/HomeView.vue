@@ -60,17 +60,43 @@ const resolveVideo = async () => {
 /*--download--*/
 const downloadVideo = () => {
   if (!isDownloadButtonEnabled.value) {
-    // 如果下载按钮被禁用，不执行下载操作
     return;
   }
-
+  
   if (!bvNumber.value || !bvNumber.value.startsWith('BV')) {
     alert('请正确输入bv号');
     return;
   }
 
+  //window.open会在新标签页打开视频
+  /*
   const downloadUrl = `https://bili.api.scc.lol/?bv=${bvNumber.value}`;
   window.open(downloadUrl, '_blank');
+  */
+
+  const downloadUrl = `https://bili.api.scc.lol/?bv=${bvNumber.value}`;
+
+  // Perform download
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', downloadUrl, true);
+  xhr.responseType = 'blob';
+
+  xhr.onload = function () {
+    const blob = new Blob([xhr.response], { type: 'video/mp4' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'video.mp4';
+    document.body.appendChild(a);
+    a.click();
+
+    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  };
+
+  xhr.send();
+
 };
 </script>
 
