@@ -1,4 +1,7 @@
 # Vue-Bili-Analyzer
+
+ ![](https://imgs.scc.lol/file/eeaba3d8202c8214e0717.png)
+
  A Bili-video Analyzer &amp; Downloader. Build with Vue + TypeScript + Tailwind CSS
 
 ## Run Dev
