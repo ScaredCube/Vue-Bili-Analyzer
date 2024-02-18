@@ -11,6 +11,6 @@
        + <a href="https://tailwindcss.com/" target="_blank" rel="noopener">Tailwind CSS</a></p>
     <p class="text-gray-500">Made by <a href="https://sccube.link/" target="_blank" rel="noopener">ScaredCube</a></p>
     <p class="text-gray-500">Open source on <a href="https://github.com/ScaredCube/Vue-Bili-Analyzer" target="_blank" rel="noopener">GitHub</a></p>
-    <p class="text-gray-500">Copyright©2023 All Rights Reserved</p>
+    <p class="text-gray-500">Copyright©2024 All Rights Reserved</p>
   </div>
 </template>
