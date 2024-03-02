@@ -60,7 +60,7 @@ const getDirectVideoLink = async (bv: string) => {
     const response = await axios.get(`https://bili-proxy.sccube.link/x/player/pagelist?bvid=${bv}`);
     if (response.data.data && response.data.data[0] && response.data.data[0].cid) {
       const cid = response.data.data[0].cid;
-      const videoUrl = `https://bili-proxy.sccube.link/x/player/playurl?bvid=${bv}&cid=${cid}&qn=116&type=&otype=json&platform=html5&high_quality=1`;
+      const videoUrl = `https://bili-proxy.sccube.link/x/player/playurl?bvid=${bv}&cid=${cid}&qn=80&type=&otype=json&platform=html5&high_quality=1`;
 
       const videoResponse = await axios.get(videoUrl);
       if (videoResponse.data.data && videoResponse.data.data.durl && videoResponse.data.data.durl[0] && videoResponse.data.data.durl[0].url) {
