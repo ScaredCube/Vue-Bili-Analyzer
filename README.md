@@ -6,6 +6,13 @@
 
  A Bili-video Analyzer &amp; Downloader. Build with Vue + TypeScript + Tailwind CSS
 
+## Use
+
+visit [bili.sccube.link](https://bili.sccube.link)
+
+!!!NOTE: The code in this repository is obsolete and deprecated. The website has been released as a new version and is no longer consistent with the code in this repository. For details, please see [blog](https://sccube.link/new_bili_downloader/)
+!!!注意：该仓库代码已失效弃用，网站已发布为新版本，与仓库内代码不一致。详情请见 [blog](https://sccube.link/new_bili_downloader/)
+
 ## Run Dev
 
 ```shell
